@@ -9,24 +9,20 @@
 3. 分别记录直接访问应用和通过GA访问的延迟
 4. 将延迟数据提交给python web服务
 
-## Dependency
+## Install Dependency
 ```
 cd node-ws
 npm i
-cd python-flask
-pip install -r requirements.txt
 ```
 
 ## 开启web应用
 ```
 cd node-ws
 node index.js
-cd python-flask
-python ga.py
 ```
 
 ## Requirements
-
+node v12.16
 
 
 ## Testing

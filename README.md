@@ -29,5 +29,8 @@ cd python-flask
 python ga.py
 ```
 
-## 测试应用
+## Testing
 在客户端打开浏览器输入 http://服务器ip/
+
+## License
+This library is licensed under the Apache 2.0 License.

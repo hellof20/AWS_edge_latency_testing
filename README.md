@@ -9,23 +9,20 @@
 3. 分别记录直接访问应用和通过GA访问的延迟
 4. 将延迟数据提交给python web服务
 
-## Install Dependency
+## Installing
 ```
-cd node-ws
-npm i
-```
-
-## 开启web应用
-```
-cd node-ws
-node index.js
+$ cd node-ws
+$ npm i
 ```
 
-## Requirements
-node v12.16
+## Usage
+Server
+```
+$ cd node-ws
+$ node index.js
+```
 
-
-## Testing
+client
 Open the browser and input http://serverip/
 
 ## License

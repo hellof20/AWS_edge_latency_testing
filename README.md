@@ -9,11 +9,7 @@
 3. 分别记录直接访问应用和通过GA访问的延迟
 4. 将延迟数据提交给python web服务
 
-- python的web服务
-1. 接收客户端提交的延迟数据
-2. 写入ddb
-
-## 安装依赖
+## Dependency
 ```
 cd node-ws
 npm i
@@ -29,8 +25,12 @@ cd python-flask
 python ga.py
 ```
 
+## Requirements
+
+
+
 ## Testing
-在客户端打开浏览器输入 http://服务器ip/
+Open the browser and input http://serverip/
 
 ## License
 This library is licensed under the Apache 2.0 License.

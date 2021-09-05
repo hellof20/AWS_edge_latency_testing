@@ -2,6 +2,8 @@
 
 AWS_edge_latency_testing用于对比从客户端浏览器直接访问应用、通过GlobalAccelerator访问应用、通过Cloudfront动态加速访问应用这三者之间所花费时间的差异。
 
+大部分基于浏览器的网络测试工具都是通过发送http请求来计算所花费时间，但是由于一个完整HTTP的请求包含dns解析、TCP握手等多个环节，因此所测得的延迟数据不太准确。AWS_edge_latency_testing采用websocket方式在建立好连接的基础上，再发送数据包进行测试，更接近实际的延迟数据。
+
 ## Architecture
 ![edge-architecture.png](https://pwmbjs.s3.cn-north-1.amazonaws.com.cn/AWS_edge_latency_testing/edge-architecture.png)
 

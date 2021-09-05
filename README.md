@@ -2,6 +2,9 @@
 
 AWS_edge_latency_testing用于对比从客户端浏览器直接访问应用、通过GlobalAccelerator访问应用、通过Cloudfront动态加速访问应用这三者之间所花费时间的差异。
 
+## Architecture
+![edge-architecture.png](https://pwmbjs.s3.cn-north-1.amazonaws.com.cn/AWS_edge_latency_testing/edge-architecture.png)
+
 ## Feature
 - 显示当前客户端的IP地址与所在区域
 - 支持延迟测试

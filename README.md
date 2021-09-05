@@ -1,29 +1,36 @@
 # AWS_edge_latency_testing
 
-用于对比客户端直接访问应用和通过GA访问应用之间的延迟差异<br>
-该应用分为两部分：
+AWS_edge_latency_testing用于对比从客户端浏览器直接访问应用、通过GlobalAccelerator访问应用、通过Cloudfront动态加速访问应用这三者之间所花费时间的差异。
 
-- nodejs的web服务
-1. 返回客户端index.html
-2. 客户端和nodejs之间websocket连接
-3. 分别记录直接访问应用和通过GA访问的延迟
-4. 将延迟数据提交给python web服务
+## Feature
+- 显示当前客户端的IP地址与所在区域
+- 支持延迟测试
+- 支持上传文件测试
+- 自定义测试次数与时间间隔
+- 测试数据自动写入Dynamodb，可用于后续分析
+- 支持对AWS所有区域进行测试
 
-## Installing
-```
-$ cd node-ws
-$ npm i
-```
+## Deployment
+在需要测试区域通过cloudformation模板（代码中的cloudformation.yaml）进行部署测试服务端
+![cloudformation.png](https://pwmbjs.s3.cn-north-1.amazonaws.com.cn/AWS_edge_latency_testing/cloudformation.png)
 
 ## Usage
-Server
-```
-$ cd node-ws
-$ node index.js
-```
+**获取测试地址**
+- 打开任何一个区域cloudformation模板部署完成后的Outputs
+- 找到InstanceIp, 如3.89.224.235
 
-client
-Open the browser and input http://serverip/
+**访问测试页面**
+- 打开浏览器，输入找到的InstanceIp
+
+## DEMO
+访问链接 http://3.89.224.235
+
+## Test Result Sample
+**阿里云雅加达访问AWS弗吉尼亚区域，ping的延迟比较**
+![ali-yjd-ping.png](https://pwmbjs.s3.cn-north-1.amazonaws.com.cn/AWS_edge_latency_testing/ali-yjd-ping.png)
+
+**阿里云雅加达访问AWS弗吉尼亚区域，上传200K文件的延迟比较**
+![ali-yjd-200K.png](https://pwmbjs.s3.cn-north-1.amazonaws.com.cn/AWS_edge_latency_testing/ali-yjd-200K.png)
 
 ## License
 This library is licensed under the Apache 2.0 License.

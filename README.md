@@ -49,7 +49,7 @@ var frankfurt_cdnurl = 'ws://d12v8yek5riemm.cloudfront.net'
 ![ali-yjd-ping.png](https://pwmbjs.s3.cn-north-1.amazonaws.com.cn/AWS_edge_latency_testing/ali-yjd-ping.png)
 
 **阿里云雅加达访问AWS弗吉尼亚区域，上传200K文件的延迟比较**
-![ali-yjd-200K.png](https://pwmbjs.s3.cn-north-1.amazonaws.com.cn/AWS_edge_latency_testing/ali-yjd-200K.png)
+![ali-yjd-200K.png](https://pwmbjs.s3.cn-north-1.amazonaws.com.cn/AWS_edge_latency_testing/ali-yjd-200.png)
 
 ## License
 This library is licensed under the Apache 2.0 License.

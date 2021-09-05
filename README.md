@@ -25,6 +25,7 @@ var frankfurt_directurl = 'ws://35.158.115.62'
 var frankfurt_gaurl = 'ws://aa204fb2285eaba0f.awsglobalaccelerator.com'
 var frankfurt_cdnurl = 'ws://d12v8yek5riemm.cloudfront.net'
 ```
+- 等待10分钟后，测试服务端会自动更新测试地址
 
 ## Usage
 **获取测试地址**

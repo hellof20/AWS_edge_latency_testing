@@ -1,4 +1,4 @@
-# galatency
+# AWS_edge_latency_testing
 
 用于对比客户端直接访问应用和通过GA访问应用之间的延迟差异<br>
 该应用分为两部分：

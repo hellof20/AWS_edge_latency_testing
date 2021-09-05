@@ -11,13 +11,26 @@ AWS_edge_latency_testing用于对比从客户端浏览器直接访问应用、�
 - 支持对AWS所有区域进行测试
 
 ## Deployment
-在需要测试区域通过cloudformation模板（代码中的cloudformation.yaml）进行部署测试服务端
+**通过cloudformation模板进行部署**
+
+在需要测试区域通过cloudformation模板（代码中的cloudformation.yaml）进行部署测试服务端，参数说明如下
+
 ![cloudformation.png](https://pwmbjs.s3.cn-north-1.amazonaws.com.cn/AWS_edge_latency_testing/cloudformation.png)
+
+**修改测试地址**
+- 等待cloudformation模板部署完成，找到cloudforamtion的Outputs中的AcceleratorDNS、CloudfrontDNS和InstanceIp
+- 修改代码 node-ws/public/testing.js中的地址为cloudformation模板生成的地址, 如
+```
+var frankfurt_directurl = 'ws://35.158.115.62'
+var frankfurt_gaurl = 'ws://aa204fb2285eaba0f.awsglobalaccelerator.com'
+var frankfurt_cdnurl = 'ws://d12v8yek5riemm.cloudfront.net'
+```
 
 ## Usage
 **获取测试地址**
-- 打开任何一个区域cloudformation模板部署完成后的Outputs
+- 打开任何一个cloudformation模板部署完成的区域，找到cloudforamtion的Outputs
 - 找到InstanceIp, 如3.89.224.235
+
 
 **访问测试页面**
 - 打开浏览器，输入找到的InstanceIp

@@ -18,7 +18,7 @@ AWS_edge_latency_testing用于对比从客户端浏览器直接访问应用、�
 ## Deployment
 **部署测试服务端**
 
-在需要测试区域通过cloudformation模板（代码中的cloudformation.yaml）进行部署测试服务端，参数说明如下
+通过cloudformation模板在需要测试区域部署测试服务端，cloudformation模板为源码中的cloudformation.yaml文件，cloudformation所用到的参数说明如下
 
 ![cloudformation.png](https://pwmbjs.s3.cn-north-1.amazonaws.com.cn/AWS_edge_latency_testing/cloudformation.png)
 

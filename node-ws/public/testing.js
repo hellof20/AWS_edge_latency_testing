@@ -5,7 +5,7 @@ var selectedRegion;
 var currentregion;
 var table,row,direct_cell,ga_cell,cdn_cell;
 var content;
-var loop=1;
+var loop=0;
 
 var frankfurt_directurl = 'ws://35.158.115.62'
 var frankfurt_gaurl = 'ws://aa204fb2285eaba0f.awsglobalaccelerator.com'
@@ -23,9 +23,9 @@ var singapore_directurl = 'ws://13.212.95.109'
 var singapore_gaurl = 'ws://a8d7b142563e7180d.awsglobalaccelerator.com'
 var singapore_cdnurl = 'ws://d39pf70o14lgox.cloudfront.net'
 
-var virginia_directurl = 'ws://35.153.143.141'
-var virginia_gaurl = 'ws://ac8dfb147b119e4f8.awsglobalaccelerator.com'
-var virginia_cdnurl = 'ws://d4rar0ur4n4il.cloudfront.net'
+var virginia_directurl = 'ws://3.89.224.235'
+var virginia_gaurl = 'ws://a9687c57c81a77847.awsglobalaccelerator.com'
+var virginia_cdnurl = 'ws://d2hl67tzfuorjt.cloudfront.net'
 
 var oregon_directurl = 'ws://34.222.104.82'
 var oregon_gaurl = 'ws://a6266e93da687b616.awsglobalaccelerator.com'
@@ -93,32 +93,29 @@ function RegionTest(directurl,gaurl,cdnurl) {
     this.directurl = directurl;
     this.gaurl = gaurl;
     this.cdnurl = cdnurl;
+
     this.direct = function (){
         directws = new WebSocket(directurl)
         directws.onmessage = function(){
             var directlatency = new Date().getTime() - directstarttime;
-            direct_cell.innerHTML = directlatency + 'ms';
-            selectedRegion.gasend();
+            $('#direct').append('<tr><td>'+ directlatency +'</td></tr>')
+            //console.log('directlatency = ' + directlatency)
         }
     }
     this.directsend = function(){
-        row = table.insertRow(1);
-        direct_cell = row.insertCell(0);
-        ga_cell = row.insertCell(1);
-        cdn_cell = row.insertCell(2);
         directstarttime = new Date().getTime()
         if(directws.readyState == 1){
             directws.send(content)
         }else{
-            selectedRegion.gasend();
+            console.log('not ready')
         }
     }
     this.ga = function (){
         gaws = new WebSocket(gaurl)
         gaws.onmessage = function(){
             var galatency = new Date().getTime() - gastarttime;
-            ga_cell.innerHTML = galatency + 'ms';
-            selectedRegion.cdnsend();
+            $('#ga').append('<tr><td>'+ galatency +'</td></tr>')
+            //console.log('galatency = ' + galatency)
         }
     }
     this.gasend = function(){
@@ -126,28 +123,23 @@ function RegionTest(directurl,gaurl,cdnurl) {
         if(gaws.readyState == 1) {
             gaws.send(content)
         }else{
-            selectedRegion.cdnsend();
+            console.log('not ready')
         }
     }
     this.cdn = function (){
         cdnws = new WebSocket(cdnurl)
         cdnws.onmessage = function(){
             var cdnlatency = new Date().getTime() - cdnstarttime;
-            cdn_cell.innerHTML = cdnlatency + 'ms';
-            if(loop < testnum){
-                selectedRegion.directsend();
-                loop = loop +1;
-            }else{
-                document.getElementById("starttest").disabled=false
-                document.getElementById("starttest").style.backgroundColor='#0000FF'
-                console.log('test completed')
-            }
+            $('#cdn').append('<tr><td>'+ cdnlatency +'</td></tr>')
+            //console.log('cdnlatency = ' + cdnlatency)
         }
     }
     this.cdnsend = function(){
         cdnstarttime = new Date().getTime()
         if(cdnws.readyState == 1){
             cdnws.send(content)
+        }else{
+            console.log('not ready')
         }
     }
     this.closews = function(){
@@ -158,82 +150,83 @@ function RegionTest(directurl,gaurl,cdnurl) {
 }
 
 window.onload = function(){
-    table = document.getElementById('tbody1')
+    $('#filescope').hide()
+    $('#result').hide()
+    content = 'ping'
     getmyip()
     currentregion = document.getElementById("region").value
     awsregion = currentregion.toLowerCase()
-    // document.getElementById('directlatency').innerHTML = "Your browser --> <b>Public Internet </b> --> AWS " + currentregion + ' Region'
-    // document.getElementById('galatency').innerHTML = "Your browser --> <b> Global Accelerator </b>--> AWS " + currentregion + ' Region'
-    // document.getElementById('cdnlatency').innerHTML = "Your browser --> <b> Cloudfront </b>--> AWS " + currentregion + ' Region'
     selectedRegion = new RegionTest(eval(awsregion+'_directurl'),eval(awsregion+'_gaurl'),eval(awsregion+'_cdnurl'))
     selectedRegion.direct()
     selectedRegion.ga()
     selectedRegion.cdn()
-    sleep(500)
 }
 
 function changeTestType(){
     clearTable()
     var testtype = document.getElementById("testtype").value;
-    console.log(testtype)
+    console.log('testtype = '+ testtype)
     if(testtype == 'upload'){
-        var d1 = document.getElementById('ppp'); 
-        d1.insertAdjacentHTML('beforebegin', '<div id="filescope"><p></p><input id="file" type="file" multiple /></div>');
+        $('#filescope').show()
+        $("input:file").change(function (){
+            var inputElement = document.getElementById("file");
+            var testfile = inputElement.files;
+            var reader = new FileReader();
+            reader.readAsBinaryString(testfile[0]);
+            reader.onload = function loaded(evt){
+                content = evt.target.result;
+                console.log(content)
+            }
+          });
     }else{
-        document.getElementById("filescope").remove()
+        content = 'ping'
+        $('#filescope').hide()
     }
 }
 
-
-function startTesting(){
+async function startTesting(){
+    loop =0
     document.getElementById("starttest").disabled=true
     document.getElementById("starttest").style.backgroundColor='#A9A9A9'
     testnum = document.getElementById("testnum").value;
-    loop = 1;
-    clearTable();
-    var testtype = document.getElementById("testtype").value;
-    if(testtype == 'latency') {
-        content = 'ping'
+    interval = document.getElementById("interval").value;
+    console.log('interval = ' + interval)
+    console.log('content = ' + content)
+    $('#result').show()
+    while(loop<testnum) {
         selectedRegion.directsend();
-    }else{
-        var inputElement = document.getElementById("file");
-        var testfile = inputElement.files;
-        var reader = new FileReader();
-        reader.readAsBinaryString(testfile[0]);
-        reader.onload = function loaded(evt){
-            content = evt.target.result;
-            selectedRegion.directsend(); 
-        }
+        selectedRegion.cdnsend();
+        selectedRegion.gasend();
+        await sleep(interval* 1000);
+        loop++
     }
+    document.getElementById("starttest").disabled=false
+    document.getElementById("starttest").style.backgroundColor='#0000FF'
+    console.log('test completed')
 }
 
 function stopTesting(){
     loop = testnum
+    clearTable();
     document.getElementById("starttest").disabled=false
     document.getElementById("starttest").style.backgroundColor='#0000FF'
 }
 
 function clearTable(){
-    var tableRows = table.getElementsByTagName('tr');
-    var rowCount = tableRows.length;
-    for (var x=rowCount-1; x>0; x--) {
-        table.removeChild(tableRows[x]);
-    }
+    $('#direct tr:not(:first)').remove();
+    $('#ga tr:not(:first)').remove();
+    $('#cdn tr:not(:first)').remove();
 }
 
 function changeregion(){
     currentregion = document.getElementById("region").value
     awsregion = currentregion.toLowerCase()
-    // document.getElementById('directlatency').innerHTML = "Your browser --> <b>Public Internet </b> --> AWS " + currentregion + ' Region'
-    // document.getElementById('galatency').innerHTML = "Your browser --> <b> Global Accelerator </b>--> AWS " + currentregion + ' Region'
-    // document.getElementById('cdnlatency').innerHTML = "Your browser --> <b> Cloudfront </b>--> AWS " + currentregion + ' Region'
     clearws()
     clearTable()
     selectedRegion = new RegionTest(eval(awsregion+'_directurl'),eval(awsregion+'_gaurl'),eval(awsregion+'_cdnurl'))
     selectedRegion.direct()
     selectedRegion.ga()
     selectedRegion.cdn()
-    sleep(500)
 }
 
 function clearws(){

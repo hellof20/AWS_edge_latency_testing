@@ -42,7 +42,7 @@ var frankfurt_cdnurl = 'ws://d12v8yek5riemm.cloudfront.net'
 - 打开浏览器，输入找到的InstanceIp
 
 ## DEMO
-访问链接 http://3.89.224.235
+访问链接 http://13.214.19.63
 
 ## Test Result Sample
 **阿里云雅加达访问AWS弗吉尼亚区域，ping的延迟比较**
